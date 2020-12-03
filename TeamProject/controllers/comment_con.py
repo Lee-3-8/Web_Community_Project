@@ -8,7 +8,9 @@ from controllers.report_con import check_update_blacklist
 
 def comment_get(post_id):
     page = int(request.args.get("page"))
-    temp = Comment.query.filter(Comment.post_id == post_id).order_by(Comment.create_date.desc())
+    temp = Comment.query.filter(Comment.post_id == post_id).order_by(
+        Comment.create_date.desc()
+    )
     if (page - 1) * 20 >= len(temp.all()):
         return jsonify(), 204
     temp = temp.paginate(page, per_page=20).items
@@ -16,7 +18,9 @@ def comment_get(post_id):
     commentlist = []
     for i, comment in enumerate(temp):
         commentlist.append(comment.serialize)
-        commentlist[i].update({"like_userid": [like_user.id for like_user in comment.like]})
+        commentlist[i].update(
+            {"like_userid": [like_user.id for like_user in comment.like]}
+        )
     return jsonify(commentlist), 200
 
 
