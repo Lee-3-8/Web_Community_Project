@@ -41,14 +41,14 @@ def category_set(id):
     return category_set_con(id)
 
 
-# 게시글 신고 리스트 반환
+# 게시글 신고 리스트 반환 - 신고 횟수가 1이상인 게시판 제목과 신고당한 횟수 반환 api(신고횟수에 따라 내림차순으로)
 @api.route("/admin/post_report")
 @admin_required
 def post_report():
     return report_con(Post)
 
 
-# 댓글 신고 리스트 반환
+# 댓글 신고 리스트 반환 - 신고 횟수가 1이상인 댓글 제목과 신고당한 횟수 반환 api(신고횟수에 따라 내림차순으로)
 @api.route("/admin/comment_report")
 @admin_required
 def comment_report():
@@ -56,6 +56,8 @@ def comment_report():
 
 
 # 신고 당한 해당 게시글 삭제
+
+
 @api.route("/admin/post_report_delete", methods=["DELETE"])
 @admin_required
 def post_report_delete():
@@ -165,9 +167,7 @@ def user_nickname_modify(id):
 def nickname_search(input_data):
     input_data_all = f"%{input_data}%"
     userlist = (
-        User.query.filter(User.nickname.ilike(input_data_all))
-        .order_by(User.nickname.desc())
-        .all()
+        User.query.filter(User.nickname.ilike(input_data_all)).order_by(User.nickname.desc()).all()
     )
     returnlist = []
     for user in userlist:
